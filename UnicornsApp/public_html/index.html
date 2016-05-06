@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+  <title>InfoViz Spring 2016</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="static/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href='https://fonts.googleapis.com/css?family=Buenard:400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,700' rel='stylesheet' type='text/css'>
+
+   <!-- topo json and geo projection -->
+  <script src="//d3js.org/d3.geo.projection.v0.min.js"></script>
+  <script src="//d3js.org/topojson.v1.min.js"></script>
+  <script src="https://d3js.org/d3-queue.v2.min.js"></script>
+
+
+  <!-- map css -->
+  <link rel="stylesheet" href="bomb_map.css"/>
+
+
+<!-- Custom styles for this template -->
+<link href="static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+
+
+</head>
+
+<body>
+<!-- <nav id="headerr" role="navigation" class="light-green lighten-5">
+    <div class="nav-wrapper container"><a id="logo-container" href="index.html" class="brand-logo">InfoViz Spring 2016</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">ABOUT</a></li>
+      </ul>
+    </div>`
+  </nav> -->
+
+<div>
+
+</div>
+<div id="page_title" class="col s5 section scrollspy"><img src="/static/files/infoviz_mockup.png"></div>
+
+
+<div class="col s1" id="side_nav_cont">
+  <ul class="section table-of-contents">
+    <li><a href="#page_title">EXPLORING THE DATA</a></li>
+  </br>
+    <li><a href="#map_title">WHERE IS THE MONEY </br>COMING FROM?</a></li>
+  </br>
+    <li><a href="#stacked_bar_contain">WHERE IS THE MONEY</br> GOING?</a></li>
+  </br>
+    <li><a href="#markets_nada_cont">WHAT MARKETS ARE THEY </br>GOING INTO</a></li>
+  </br>
+    <li><a href="#markets_carlo_cont">WHAT MARKETS ARE UNICORNS </br>GETTING FUNDING FOR?</a></li>
+  </ul>
+</div>
+<div class="row box-pink col s10 offset-s1" id="intro"> A startup is a new business venture in the form of a company or organization designed to search for a repeatable and scalable business model. These companies are innovative in a process of development, validation and research for target markets. Funds to start these businesses are provided by investors such as venture capitalists through various rounds. TechCrunch has created a platform, called Crunchbase, which is basically a Wikipedia for startups and investors. With the help of this crowd sourced data, our visualization aims to extract information about funding by venture capitalists, and the progress of startups through their stages of funding.
+</div>
+
+    <div class="row flex-container">
+
+        <div class="row col s12 flex-container">
+<!--           <div class="col s1 box">
+          timeline
+          </div> -->
+
+          <div class="col s11 section scrollspy" id="map_title_1">
+          <div id="map_title" class="col s6 offset-s1 sectionTitle section scrollspy">WHERE ARE STARTUP INVESTORS LOCATED?</div>
+            <!-- map -->
+            <div class="col s8 box offset-s3 center" id="map_contain" >
+
+              <div id = "map">
+                <div id="subtitle"></div>
+              </div>
+              <div class ="col s4 " id = "year"></div>
+              <div class ="col s3 infoo" id = "investor"></div>
+              <div class ="col s4" id = "rounds"></div>
+              <!-- <div class ="col s3" id = "investor"></div>
+              <div class ="col s3" id = "rounds"></div> -->
+
+            </div>
+            <!-- stacked bar -->
+            <div class = "col s9 offset-s1 box section scrollspy" id="stacked_bar_contain">
+              <!--<div id="stacked_bar">
+                </div>-->
+                <ul class="tabs">
+                  <!--<li class="tab col s2"><a class="active" href="#total_stack">Total Numbers</a></li>-->
+                  <li class="tab col s2"><a class="active" href="#stacked_bar">Total Numbers</a></li>
+
+                  <li class="tab col s2"><a href="#percentage_stack_cont">Percentage</a></li>
+                </ul>
+
+                <div id="stacked_bar" class="total_stack col s12">
+                 <form>
+                  <label><input type="checkbox">Sort values</label>
+                 </form>
+                </div>
+                <div id="percentage_stack_cont" class="percentage_stack col s9">
+                  Click on any color to move it to the bottom of the chart
+                </div>
+             </div>
+             <div class="col s2 side-barz">Venture Capitalists are from countries all over the world. And they fund startups that are located in other countries. But
+             <P class= "nummmmm">78%</p>
+               of all VCs funded invested in startups located in their own country. These graphs show the amount of funding given from each country to other countries.</div>
+
+           <div class="row col s5 offset-s7 sectionTitle section scrollspy" id="markets_nada_cont"> WHAT MARKETS ARE BEING FUNDED?
+          </div>
+         <div class="row col s10 offset-s1 box" id="areaMain">
+<!--           <div class="dropdown"> -->
+            <div class="buttons col s1" id="_buttons">Markets</div>
+                <div class="container chart" id="areachart1">
+                </div>
+                <div class="container chart" id="areachart2">
+                </div>
+         </div>
+         <div class="row col s10" id="market_text">Different markets attract different amounts of funding throughout time. Click on the different markets to see the number of startups funded over time (top half of the graph) and the amount that they were funded over time (lower half of the graph) and see how they compare to the aggregate funding given over time.
+</div>
+
+
+           <div class="row col s5 offset-s1 sectionTitle section scrollspy" id="markets_carlo_cont"> WHAT MARKETS ARE UNICORNS GETTING FUNDING FOR?
+          </br>
+          </div>
+
+         <!--  <div class="col s10 offset-s1">   <div class="widget"> -->
+<!--     
+    <div class="row">
+
+      <div class="col l4" id="chart"> 
+          <h1> Unicorn Startups </h1> 
+      </div>
+      <div class="col l5" id="chart2"> 
+          <h1> All Startups </h1> 
+      </div>
+      <div class="col l4 m4 s4"> 
+
+      <div id="chart3">
+          <h1> View by Unicorn </h1> 
+      </div>
+      </div>
+    </div>  
+  </div> -->
+
+         
+          <div class="col s4 box" id = "chart"><h2>Unicorns</h2></div>
+          <div class="col s4 box" id = "chart2"><h2>All Startups</h2></div>
+          <div class="col s8 offset-s1 box" id="chart3"></div>
+           <div class="col s3 side-barz"> Unicorns, companies valued at over $1 Billion dollars, attract slightly different types of funding than the entire startup market. This data shows that although BioTech is highly funded in the startup world, many unicorns are not in that market. Unicorns in E-Commerce, Advertising, and Software are the most highly funded. Click on the different markets to see how they compare to the entire startup market as well as to see how individual startups were funded over time.</div>
+        </div>
+     </div>
+   </div>
+
+
+<div class= "row">
+  <footer class="page-footer orange darken-3">
+    <div class="container">
+      <div class="footer-copyright">
+        <div id = "copyright">
+        </div>
+       </div>
+
+    </div>
+  </footer>
+
+
+<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<!--<script type="text/javascript" src="js/stacked_bar_total.js"></script>-->
+<script type="text/javascript" src="js/stacked_bar_percent.js"></script>
+<script src="js/colorbrewer.js"></script>
+<script type="text/javascript" src="js/materialize.js"></script>
+<script src="js/index.js"></script>
+<script type="text/javascript" src="js/areachart.js"></script>
+
+<script type="text/javascript" src="/js/map.js"></script>
+<script type="text/javascript" src="js/stacked.js"></script>
+<script type="text/javascript" src="js/tooltip.js"></script>
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('ul.tabs').tabs();
+  });
+
+   $(document).ready(function(){
+    $('.scrollspy').scrollSpy();
+  });
+
+ </script>
+</body>
+</html>
