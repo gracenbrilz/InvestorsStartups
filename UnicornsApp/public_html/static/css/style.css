@@ -437,3 +437,11 @@ circle {
   margin-top: -20px;
 }
 
+.circle_label {
+  color: grey;
+  fill: grey;
+  font-size: 20px;
+  padding-left: 3em;
+  font-family:'Buenard', serif;
+}
+

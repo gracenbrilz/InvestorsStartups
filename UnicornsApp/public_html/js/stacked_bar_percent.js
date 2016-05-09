@@ -1,5 +1,5 @@
 var margin = {top: 20, right: 100, bottom: 30, left: 40},
-    width = 1000 - margin.left - margin.right,
+    width = 850 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
  
 var x = d3.scale.ordinal()
@@ -29,7 +29,7 @@ var svg = d3.select("body #percentage_stack_cont").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
  
-d3.csv("static/files/stack_bar.txt", function(error, data) {
+d3.csv("static/files/stacked_subsetted.csv", function(error, data) {
     var categories = d3.keys(data[0]).filter(function(key) { return key !== "Sample"; });
     var categories_shift = categories;
     console.log(categories);
