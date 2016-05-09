@@ -1,5 +1,5 @@
 var margin = {top: 20, right: 100, bottom: 30, left: 40},
-    width = 1000 - margin.left - margin.right,
+    width = 900 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
  
 var x = d3.scale.ordinal()
@@ -72,6 +72,11 @@ d3.csv("static/files/stack_bar.txt", function(error, data) {
     .attr("y", function(d) { return y(d.y1); })
     .attr("height", function(d) { return y(d.y0) - y(d.y1); })
     .style("fill", function(d) { return barColor(d.name);})
+    .call(d3.helper.tooltip()
+  .attr("class", "tooltip_css")
+  .style({color: 'black', background: 'rgba(183, 210, 238, 0.75)', padding: '0.5em', borderradius: '2px'})
+  .text(function(d) { return "Startup Country: " +  d.name + "</br>Total Funding: " + (1-((500- (y(d.y0) - y(d.y1)))/500))*100 +"%"; })
+  )
     .on("click", function(d) {
         var gene_index = categories_shift.indexOf(d.name);
         moveStuff(gene_index);
@@ -103,7 +108,12 @@ d3.csv("static/files/stack_bar.txt", function(error, data) {
       .delay(function(d, i) { return i * 50})
       .attr("y", function(d) {return y(d.y1);})
       .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-      .style("fill", function(d) { return barColor(d.name);});
+      .style("fill", function(d) { return barColor(d.name);})
+        .call(d3.helper.tooltip()
+  .attr("class", "tooltip_css")
+  .style({color: 'black', background: 'rgba(183, 210, 238, 0.75)', padding: '0.5em', borderradius: '2px'})
+  .text(function(d) { return "Startup Country: " +  d.name + "</br>Total Funding: " + (1-((500- (y(d.y0) - y(d.y1)))/500))*100 +"%"; })
+);
  
   last_sample = data[data.length - 1];
   };
@@ -113,25 +123,49 @@ d3.csv("static/files/stack_bar.txt", function(error, data) {
   console.log(data);
   console.log(data[data.length - 1].genes);
   var last_sample = data[data.length - 1];
-  console.log( x(last_sample.Sample));
-  svg.selectAll("text")
-  .data(last_sample.genes)
-  .enter()
-  .append("text")
-  .text(function(d) {
-      return d.name;
-  })
-  .attr("x", function(d) {
-      return x(last_sample.Sample) + x.rangeBand() + 15;
-  })
-  .attr("y", function(d) {
-      return (y(d.y0) + y(d.y1)) / 2;
-  })
-  .attr("font-size", "11px")
-  .attr("fill", "black");
+  // console.log( x(last_sample.Sample));
+
+  //  var legend = svg.selectAll(".legend")
+
+  //  legend.append("text")
+  // .data(last_sample.genes)
+  // .enter()
+  // .append("text")
+  // .text(function(d) {
+  //     return d.name;
+  // })
+  // .attr("x", function(d) {
+  //     return x(last_sample.Sample) + x.rangeBand() + 15;
+  // })
+  // .attr("y", function(d) {
+  //     return (y(d.y0) + y(d.y1))/2;
+  // })
+  // .attr("font-size", "11px")
+  // .attr("fill", "white")
+
+  var legend = svg.selectAll(".legend")
+      .data(barColor.domain().slice().reverse())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 15 + ")"; });
+
+  legend.append("rect")
+      .attr("x", width+10)
+      .attr("width", 18)
+      .attr("height", 10)
+      .style("fill", barColor);
+
+  legend.append("text")
+      .attr("x", width)
+      .attr("y", 5)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d; });
   
   
 });
+
+
 
 
 
