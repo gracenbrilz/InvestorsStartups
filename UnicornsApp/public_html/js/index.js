@@ -51,13 +51,12 @@ function myDataIsReady() {
     console.log("data_combined should have values: ")
     data = data_unicorn.slice(0, 35)
     data2 = data_all.slice(0, 35)
-    data2.sort(function(a, b) { 
-        return a[1] < b[1] ? 1 : -1;
-    });
+    // data2.sort(function(a, b) { 
+    //     return a[1] < b[1] ? 1 : -1;
+    // });
     console.log(data);// will trace the data that was loaded
     // Here you can draw your visualization
     var uniColor = d3.scale.ordinal()
-    // .range(['#ffff53','#ffffad','#ffff84','#deff84','#9aff84','#bcebae','#99ebae','#00db97','#69e275','#34ed5c','#6da16e','#c3a16e','#ffa16e','#00c9bb','#00ffd5','#89d1c5','#6eccdc','#a8b1c0','#9fd8ef','#b7d2ee','#a4eeda','#b9ff53','#daf741','#d25d00','#ff5a3b','#c55a3b','#ffd1c5 ','#ffb762','#ff8400','#ff804f','#ffb486','#ffbdac','#ff6b02','#007b75','#00a48d'])
     .range(["#007b75","#00a48d","#00c9bb","#00ffd5","#89d1c5","#6eccdc","#a8b1c0","#9fd8ef","#b7d2ee","#a4eeda","#99ebae","#bcebae","#9aff84","#00db97","#69e275","#6da16e","#34ed5c","#b9ff53","#daf741","#ffff53","#deff84","#ffff84","#ffb762","#ffffad","#c7a169","#ffb8a8","#ffcec3","#ffaf7f","#ff804f","#d25d00","#c55a3b","#ff5a3b","#fa5300","#fa7600","#DE4000"])
     .domain(["E-Commerce","Advertising","Software","Storage","Clean Technology","Communities","File Sharing","Technology","Online Shopping","Curated Web","Enterprise Software","Design","Games","Cloud Computing","Shopping","Entertainment","Transportation","Security","Data Security","Peer-to-Peer","Mobile Payments","Search","Fashion","Facebook Applications","Finance Technology","Consumer Electronics","Analytics","Privacy","Mobile Games","News","Hardware + Software","Retail","Mobile","Location Based Services","Biotechnology"]);
 
@@ -67,7 +66,7 @@ function myDataIsReady() {
 
     var axisuniMargin = 20,
         uniMargin = 20,
-        valueuniMargin = 4,
+        valueuniMargin = 6,
         width = chart.offsetWidth,
         height = chart.offsetHeight,
         barHeight = (height-axisuniMargin-uniMargin*2)* 0.6/data.length,
@@ -115,9 +114,10 @@ function myDataIsReady() {
 
     uniXaxis = d3.svg.axis()
       .scale(uniScale2)
-      .outerTickSize(0)
-      // .tickSize(-height + 2*uniMargin + axisuniMargin)
-      .orient("bottom");
+      .tickValues(uniScale2.domain())
+      // .outerTickSize(0)
+      // .tickSize(-height*2 + 2*uniMargin + axisuniMargin)
+      .orient("bottom right");
 
     bar.append("rect")
       .attr("transform", "translate("+labelWidth+", 0)")
@@ -157,6 +157,10 @@ function myDataIsReady() {
               .attr("r", 5)
         });
 
+        unisvg.insert("g",":first-child")
+         .attr("class", "axis")
+         .attr("transform", "translate(" + (uniMargin + labelWidth) + ","+ (height - axisuniMargin - uniMargin - 10)+")")
+         .call(uniXaxis);
 
 
     unisvg2 = d3.select(chart2)
@@ -184,8 +188,9 @@ function myDataIsReady() {
 
     uniXaxis = d3.svg.axis()
       .scale(uniScale)
-      .tickSize(-height + 2*uniMargin + axisuniMargin)
-      .outerTickSize(0)
+      .tickValues(uniScale.domain())
+      // .tickSize(-height + 2*uniMargin + axisuniMargin)
+      // .outerTickSize(0)
       .orient("bottom");
 
     bar2.append("rect")
@@ -223,7 +228,10 @@ function myDataIsReady() {
               .attr("fill", function(d) { return uniColor(d[0].replace(/ /g,'')); })
               .attr("r", 5)
         });
-
+        unisvg2.insert("g",":first-child")
+         .attr("class", "axis")
+         .attr("transform", "translate(" + (uniMargin) + ","+ (height - axisuniMargin - uniMargin -10)+")")
+         .call(uniXaxis);
 
 }
 
@@ -305,10 +313,10 @@ d3.csv("/static/files/investments-unicorns-cumsum.csv", function(error, data) {
         .call(d3.helper.tooltip()
                 .attr("class", "tooltip_css")
                 .style({color: 'black', background: 'rgba(183, 210, 238, 0.75)', padding: '0.5em', borderradius: '2px'})
-                .text(function(d, i){ return 'Company Name: ' + d.company_name + '<br>Round: $'+ d.price; })
+                .text(function(d, i){  return 'Company Name: ' + d.company_name + '<br>Round: $'+ d.price; })
             )
         .on('mouseover', function(d, i){ d3.select(this).style({fill: 'skyblue'}); })
-        .on('mouseout', function(d, i){ d3.select(this).style({fill: function(d) { return uniColor(d.company_market.replace(/ /g,'')); }})})
+        .on('mouseout', function(d, i){ d3.select(this).style({fill: function(d) { alert("beepboop"); return uniColor(d.company_market.replace(/ /g,'')); }})})
         
         // .attr("r", function(d) {return d.number_downloaded*1.5; })
 
@@ -335,13 +343,25 @@ d3.csv("/static/files/investments-unicorns-cumsum.csv", function(error, data) {
     unisvg.append("svg:g")
         // .attr("class", "x axis")
         .classed("x axis", true)
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + height*1.04 + ")")
         .call(uniXaxis);
 
     // Add the Y Axis
     unisvg.append("g")
         .attr("class", "y axis")
         .call(uniYaxis);
+
+    unisvg.append("g")
+      .attr("class", "y axis")
+      .call(uniYaxis)
+    .append("text")
+      .attr("class", "circle_label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 16)
+      .attr("dy", ".71em")
+      // .attr("x", 30)
+      .style("text-anchor", "end")
+      .text("Total Funding")
 
 });
 
@@ -409,6 +429,17 @@ function updateData(_value) {
 
 
     });
+
+    unisvg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Sepal Length (cm)")
 
 
   });

@@ -108,6 +108,7 @@
                   var circles = circleGroup.selectAll("circle")
                   .data(overall_city_dict[ind])
                   .enter().append("circle")
+                  .attr("class", "bomb_color")
                   $("#year").html('<p>' + display_dates[ind]+'<p>');
                   $("#investor").html('<h1>Top City: ' + top_vc[ind]+'</h1>');
                   $("#rounds").html('<h1> ' + rounds[ind] +' Rounds</h1>');

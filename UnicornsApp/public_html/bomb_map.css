@@ -36,7 +36,7 @@ div.tooltip {
  pointer-events: none;
 }
 
-circle {
+.bomb_color {
 	fill: #006600;
 }
 

@@ -73,8 +73,9 @@ d3.csv("../static/files/YEAR-country-summed-stacked-split.csv", function(error, 
       .attr("class", "y axis")
       .call(yAxis_stack)
     .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
+      // .attr("transform", "rotate(-90)")
+      .attr("y", -10)
+      .attr("x", 50)
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Population");
